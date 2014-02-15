@@ -1,0 +1,131 @@
+<style type="text/css">
+    * { margin: 0; padding: 0;}
+    #canvas {
+        display: block;
+        background: #000;
+    }
+</style>
+
+<canvas id="canvas"></canvas>
+
+<script type="text/javascript">
+    window.onload = function(){
+        var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+
+        // canvas - full width and height of the page
+        var W = window.innerWidth, H = window.innerHeight;
+        canvas.width = W;
+        canvas.height = H;
+
+        // set the center of our "circle" to the middle of hte canvas.
+        circleCenterX = W/2;
+        circleCenterY = H/2;
+        circleRadius = origCircleRadius = 400;
+
+        // the opacity of the mask that layers over the drawings
+        fadeOutConstant = 0.02;
+
+        // Make some particles
+        var particles = [];
+        var numOfPoints = 4;
+
+        for (var i = 0; i < numOfPoints; i++) {
+            var angle = i * 2*Math.PI/numOfPoints;
+
+            particles.push(new particle(angle));
+        }
+
+        // Find x coordinates of point on the circle given angle (uses circleRadius)
+        function findX(angle) {
+            return circleCenterX + circleRadius * Math.cos(angle);
+        }
+
+        // Find y coordinates of point on the circle given angle (uses circleRadius)
+        function findY(angle) {
+            return circleCenterY + circleRadius * Math.sin(angle);
+        }
+
+        function particle(angle)
+        {
+            var x = findX(angle);
+            var y = findY(angle);
+
+            // coordinates
+            this.location = {x: x, y: y};
+
+            // radius of the particle - zero for invisible
+            this.radius = 0;
+
+            // speed at which it moves around the "circle"
+            this.speed = 3;
+
+            // angle placement along the circle
+            this.angle = angle;
+
+            // the particle will have a random color, which will determined
+            // the color of the line that gets drawn.
+            var r = Math.round(Math.random()*255);
+            var g = Math.round(Math.random()*255);
+            var b = Math.round(Math.random()*255);
+            var a = Math.random();
+            this.rgba = "rgba("+r+", "+g+", "+b+", "+a+")";
+        }
+
+        // connect all the particles and move them
+        function draw()
+        {
+            // fill the mask in over existing drawings
+            ctx.globalCompositeOperation = "source-over";
+            ctx.fillStyle = "rgba(0, 0, 0, "+ fadeOutConstant +")";
+            ctx.fillRect(0, 0, W, H);
+            ctx.globalCompositeOperation = "lighter";
+
+            for(var i = 0; i < particles.length; i++)
+            {
+                var p = particles[i];
+                ctx.fillStyle = "white";
+                ctx.fillRect(p.location.x, p.location.y, p.radius, p.radius);
+
+                for(var n = 0; n < particles.length; n++)
+                {
+                    var p2 = particles[n];
+
+                    ctx.beginPath();
+                    ctx.lineWidth = 1;
+                    ctx.moveTo(p.location.x, p.location.y);
+                    ctx.lineTo(p2.location.x, p2.location.y);
+                    ctx.strokeStyle = p.rgba;
+                    ctx.stroke();
+                }
+
+                // move the particles around our circle
+                if (i % 2 === 0 ) {
+                    p.angle = p.angle + p.speed*2*Math.PI/360;
+                } else {
+                    p.angle = p.angle - p.speed*2*Math.PI/360;
+                }
+                p.location.x = findX(p.angle);
+                p.location.y = findY(p.angle);
+             }
+
+            if (p.angle >= Math.PI*2) {
+                p.angle = 0;
+            }
+
+            // semi-randomly take or add particles
+            if (Math.random() > .9) {
+                particles.push(new particle(2*Math.PI*Math.random()));
+            } else {
+                if (particles.length > numOfPoints) {
+                    particles.shift();
+                }
+            }
+
+            circleRadius = Math.random() * origCircleRadius;
+            //circleRadius = Math.sin(p.angle) * origCircleRadius;
+        }
+
+        setInterval(draw, 30);
+    }
+</script>
