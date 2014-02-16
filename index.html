@@ -21,41 +21,65 @@
         // set the center of our "circle" to the middle of hte canvas.
         circleCenterX = W/2;
         circleCenterY = H/2;
-        circleRadius = origCircleRadius = 400;
 
         // the opacity of the mask that layers over the drawings
         fadeOutConstant = 0.02;
 
         // Make some particles
         var particles = [];
-        var numOfPoints = 4;
+        var connectionMap = [];
+        var numOfPointsPerLayer = 3;
+        var radiusLayers = [
+            {
+                radius: 200,
+                direction: 'cw'
+            },
+            {
+                radius: 400,
+                direction: 'ccw'
+            },
+            {
+                radius: 600,
+                direction: 'cw'
+            }
+        ];
 
-        for (var i = 0; i < numOfPoints; i++) {
-            var angle = i * 2*Math.PI/numOfPoints;
-
-            particles.push(new particle(angle));
+        for (var i = 0; i < numOfPointsPerLayer; i++) {
+            for (var n = 0; n < radiusLayers.length; n++) {
+                var angle = i * 2*Math.PI/numOfPointsPerLayer;
+                var newParticle = new particle(angle, radiusLayers[n].radius, radiusLayers[n].direction);
+                particles.push(newParticle);
+            }
         }
 
+        generateConnectionMap(particles);
+
+        console.log(connectionMap);
+
         // Find x coordinates of point on the circle given angle (uses circleRadius)
-        function findX(angle) {
-            return circleCenterX + circleRadius * Math.cos(angle);
+        function findX(angle, radius) {
+            return circleCenterX + radius * Math.cos(angle);
         }
 
         // Find y coordinates of point on the circle given angle (uses circleRadius)
-        function findY(angle) {
-            return circleCenterY + circleRadius * Math.sin(angle);
+        function findY(angle, radius) {
+            return circleCenterY + radius * Math.sin(angle);
         }
 
-        function particle(angle)
+        function particle(angle, radius, direction)
         {
-            var x = findX(angle);
-            var y = findY(angle);
+            var x = findX(angle, radius);
+            var y = findY(angle, radius);
+
+            this.radius = radius;
+
+            this.direction = direction;
 
             // coordinates
             this.location = {x: x, y: y};
 
             // radius of the particle - zero for invisible
-            this.radius = 0;
+            this.size = 0;
 
             // speed at which it moves around the "circle"
             this.speed = 3;
@@ -68,8 +92,24 @@
             var r = Math.round(Math.random()*255);
             var g = Math.round(Math.random()*255);
             var b = Math.round(Math.random()*255);
-            var a = Math.random();
-            this.rgba = "rgba("+r+", "+g+", "+b+", "+a+")";
+            this.rgba = "rgba("+r+", "+g+", "+b+", 1)";
+        }
+
+        function generateConnectionMap(particles) {
+            connectionMap = [];
+            var total = particles.length;
+
+            for (var i = 0; i < total; i++) {
+                for (var n = i+1; n < total; n++) {
+                    connectionMap.push({
+                        x1: particles[i].location.x,
+                        y1: particles[i].location.y,
+                        x2: particles[n].location.x,
+                        y2: particles[n].location.y,
+                        rgba: particles[i].rgba
+                    });
+                }
+            }
         }
 
         // connect all the particles and move them
@@ -81,51 +121,58 @@
             ctx.fillRect(0, 0, W, H);
             ctx.globalCompositeOperation = "lighter";
 
+            for (var j = 0; j < connectionMap.length; j++) {
+                var connection = connectionMap[j];
+
+                ctx.beginPath();
+                ctx.lineWidth = 1;
+                ctx.moveTo(connection.x1, connection.y1);
+                ctx.lineTo(connection.x2, connection.y2);
+                //ctx.quadraticCurveTo(connection.x2, connection.y2, circleCenterX, circleCenterY);
+                ctx.strokeStyle = connection.rgba;
+                ctx.stroke();
+            }
+
             for(var i = 0; i < particles.length; i++)
             {
                 var p = particles[i];
                 ctx.fillStyle = "white";
-                ctx.fillRect(p.location.x, p.location.y, p.radius, p.radius);
-
-                for(var n = 0; n < particles.length; n++)
-                {
-                    var p2 = particles[n];
-
-                    ctx.beginPath();
-                    ctx.lineWidth = 1;
-                    ctx.moveTo(p.location.x, p.location.y);
-                    ctx.lineTo(p2.location.x, p2.location.y);
-                    ctx.strokeStyle = p.rgba;
-                    ctx.stroke();
-                }
+                ctx.fillRect(p.location.x, p.location.y, p.size, p.size);
 
                 // move the particles around our circle
-                if (i % 2 === 0 ) {
+                if (p.direction == 'cw') {
                     p.angle = p.angle + p.speed*2*Math.PI/360;
                 } else {
                     p.angle = p.angle - p.speed*2*Math.PI/360;
                 }
-                p.location.x = findX(p.angle);
-                p.location.y = findY(p.angle);
-             }
 
-            if (p.angle >= Math.PI*2) {
-                p.angle = 0;
+                if (p.angle >= Math.PI*2) {
+                    p.angle = 0;
+                }
+
+                particles[i].angle = p.angle;
+                particles[i].radius = p.radius;
+                particles[i].location.x = findX(p.angle, p.radius);
+                particles[i].location.y = findY(p.angle, p.radius);
             }
 
+            generateConnectionMap(particles);
+
+
             // semi-randomly take or add particles
-            if (Math.random() > .9) {
+            /*if (Math.random() > .9) {
                 particles.push(new particle(2*Math.PI*Math.random()));
             } else {
                 if (particles.length > numOfPoints) {
                     particles.shift();
                 }
-            }
+            }*/
 
-            circleRadius = Math.random() * origCircleRadius;
-            //circleRadius = Math.sin(p.angle) * origCircleRadius;
+            //circleRadius = Math.random() * origCircleRadius;
+            //p.radius = Math.cos(p.angle) * p.origRadius;
         }
 
         setInterval(draw, 30);
+        //draw();
     }
 </script>
