@@ -1,0 +1,49 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+#canvas {
+    display: block;
+    background: #000;
+}
+
+#github {
+    position: fixed;
+    bottom: 10px;
+    right: 15px;
+    background-color: rgba(255,255,255,0.4);
+    border-radius: 3px;
+    height: 31px;
+    width: 32px;
+    border: 1px solid black;
+}
+
+#menu {
+    border-radius: 5px;
+    padding: 15px 10px 5px;
+    width: 300px;
+    color: white;
+    position: absolute;
+    left: 1px;
+    top: 1px;
+    background-color: rgba(255, 55, 255, 0.2);
+}
+
+.left { float: left; }
+.clear { clear: both; }
+.right { float: right; }
+
+.form-field { margin-bottom: 10px; clear: both; }
+
+.form-field label {
+    float: left;
+    width: 160px;
+    padding-right: 10px;
+    text-align: right;
+}
+
+.form-field .slider, .form-field select {
+    float: right;
+    width: 100px;
+}

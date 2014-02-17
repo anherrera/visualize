@@ -3,52 +3,108 @@
 <head>
     <title>Visualize by Alexa Herrera</title>
 
-    <link rel="stylesheet" href="style.css" type="text/css" />
+    <link rel="stylesheet" href="css/ui-darkness/jquery-ui-1.10.4.custom.min.css" />
+    <link rel="stylesheet" href="css/style.css" type="text/css" />
 </head>
 <body>
 
-    <!--div id="menu">
+    <div id="github">
+        <a href="https://github.com/anherrera/visualize">
+            <img src="images/GitHub-Mark-32px.png" />
+        </a>
+    </div>
 
-        <div class="form-field">
-            <label>Fade Out</label>
-            <input type="text" id="fadeOut" />
-        </div>
+    <div id="menu">
+        <form id="menu-form">
+            <div class="form-field">
+                <label>Fade Out Speed</label>
+                <div id="fadeOut" class="slider"></div>
+                <div class="clear"></div>
+            </div>
 
-        <div class="form-field">
-            <label>Connect pts on same layer?</label>
-            <select id="connectOnSameLayer">
-                <option value="1">Yes</option>
-                <option value="0">No</option>
-            </select>
-        </div>
+            <div class="form-field">
+                <label>Connect Points on Same Layer</label>
+                <select id="connectOnSameLayer">
+                    <option value="1">Yes</option>
+                    <option value="0" selected="selected">No</option>
+                </select>
+                <div class="clear"></div>
+            </div>
 
-        <div class="form-field">
-            <label>Connect pts on diff layers?</label>
-            <select id="connectOnDiffLayer">
-                <option value="1">Yes</option>
-                <option value="0">No</option>
-            </select>
-        </div>
+            <div class="form-field">
+                <label>Connect Differently Layered Points</label>
+                <select id="connectOnDiffLayer">
+                    <option value="1" selected="selected">Yes</option>
+                    <option value="0">No</option>
+                </select>
+                <div class="clear"></div>
+            </div>
 
-        <div class="form-field">
-            <label>Connect pts to center?</label>
-            <select id="connectToCenter">
-                <option value="1">Yes</option>
-                <option value="0">No</option>
-            </select>
-        </div>
+            <div class="form-field">
+                <label>Connect to Center</label>
+                <select id="connectToCenter">
+                    <option value="1">Yes</option>
+                    <option value="0" selected="selected">No</option>
+                </select>
+                <div class="clear"></div>
+            </div>
 
-        <div class="form-field">
-            <label>Point Size</label>
-            <input type="text" id="pointSize" />
-        </div>
+            <div class="form-field">
+                <label>Speed</label>
+                <div id="pointSpeed" class="slider"></div>
+                <div class="clear"></div>
+            </div>
 
-    </div-->
+            <div class="form-field">
+                <label>Line Spacing</label>
+                <div id="lineDistanceFactor" class="slider"></div>
+                <div class="clear"></div>
+            </div>
+
+            <div class="form-field">
+                <label>Random Colors</label>
+                <select id="randomColors">
+                    <option value="1">Yes</option>
+                    <option value="0" selected="selected">No</option>
+                </select>
+                <div class="clear"></div>
+            </div>
+
+            <div class="form-field">
+                <label>Cycle Colors</label>
+                <select id="colorChangeOnDraw">
+                    <option value="1">Yes</option>
+                    <option value="0" selected="selected">No</option>
+                </select>
+                <div class="clear"></div>
+            </div>
+
+            <div class="form-field">
+                <label>Line Style</label>
+                <select id="connectionStyle">
+                    <option value="linear">Linear</option>
+                    <option value="quadratic" selected="selected">Quadratic</option>
+                </select>
+                <div class="clear"></div>
+            </div>
+
+            <div class="form-field">
+                <label>Pattern Style (quadratic)</label>
+                <select id="quadraticStyle">
+                    <option value="daisy" selected="selected">"Daisy"</option>
+                    <option value="rose">"Rose"</option>
+                </select>
+                <div class="clear"></div>
+            </div>
+        </form>
+    </div>
 
     <canvas id="canvas"></canvas>
 
-    <script type="text/javascript" src="colors.min.js"></script>
-    <script type="text/javascript" src="visualize.js"></script>
-
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery-ui-1.10.4.custom.min.js"></script>
+    <script type="text/javascript" src="js/colors.min.js"></script>
+    <script type="text/javascript" src="js/visualize.js"></script>
+    <script type="text/javascript" src="js/menu.js"></script>
 </body>
 </html>
