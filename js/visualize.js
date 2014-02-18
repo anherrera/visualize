@@ -1,52 +1,3 @@
-var options = {
-    // the opacity of the mask that layers over the drawings (0-1)
-    fadeOut: .1,
-    // the layers that our points travel on
-    layers: [
-        {
-            radius: 200,
-            direction: 'cw',
-            numPoints: 6
-        },
-        {
-            radius: 400,
-            direction: 'ccw',
-            numPoints: 6
-        },
-        {
-            radius: 600,
-            direction: 'cw',
-            numPoints: 6
-        }
-    ],
-    // draw lines between points on the same layer
-    connectOnSameLayer: false,
-    // draw lines between points on different layers
-    connectOnDiffLayer: true,
-    // connect to center of circle
-    connectToCenter: false,
-    // TODO outline only @depends connectOnSameLayer
-    outlineOnly: true,
-    // the size of the points (zero for invisible)
-    pointSize: 0,
-    // the speed at which the points move
-    pointSpeed: 1,
-    // how spaced out the lines are
-    lineDistanceFactor: 1,
-    // choose random colors for connections
-    randomColors: false,
-    // color change on each draw @depends randomColors
-    colorChangeOnDraw: false,
-    // line color if not random (hex) @depends !randomColors
-    lineColors: ['#009999', '#FFAA00', '#FF0000'],
-    // draw straight or quadratic lines between points
-    connectionStyle: 'quadratic',
-    // quadratic style - rose or daisy @depends connectionStyle='quadratic'
-    quadraticStyle: 'daisy',
-    // TODO change the radius as the points move
-    varyRadius: false
-};
-
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 
@@ -58,6 +9,15 @@ canvas.height = H;
 // set the center of our "circle" to the middle of hte canvas.
 circleCenterX = W/2;
 circleCenterY = H/2;
+
+var options = {
+    // TODO outline only @depends connectOnSameLayer
+    outlineOnly: true,
+    // TODO change the radius as the points move
+    varyRadius: false
+};
+
+options = presets[Math.round(Math.random() * (presets.length-1))];
 
 var particles;
 var connectionMap;
@@ -80,7 +40,7 @@ function init() {
 
         for (i = 0; i < r.numPoints; i++) {
             var angle = Math.PI*2 * (i / r.numPoints);
-            var newParticle = new Particle(angle, options.layers[n].radius, options.layers[n].direction);
+            var newParticle = new Particle(options.layers[n], angle);
             particles.push(newParticle);
         }
     }
@@ -93,32 +53,44 @@ function init() {
 init();
 
 // Find x coordinates of point on the circle given angle (uses circleRadius)
-function findX(angle, radius) {
-    /*var angleInDegrees = angle/Math.PI * 180;
-    angleInDegrees = Math.round(angleInDegrees);
-    angle = angleInDegrees * Math.PI/180;*/
+function findX(angle, radius, center) {
+    if (center.mutable) {
+        var particle = particles[center.particleIdx];
+        center.x = particle.location.x;
+    }
 
-    return circleCenterX + radius * Math.cos(angle);
+    if (center.x) {
+        return center.x + radius * Math.cos(angle);
+    }
 }
 
 // Find y coordinates of point on the circle given angle (uses circleRadius)
-function findY(angle, radius) {
-    /*var angleInDegrees = angle/Math.PI * 180;
-    angleInDegrees = Math.round(angleInDegrees);
-    angle = angleInDegrees * Math.PI/180;*/
+function findY(angle, radius, center) {
+    if (center.mutable) {
+        var particle = particles[center.particleIdx];
+        center.y = particle.location.y;
+    }
 
-    return circleCenterY + radius * Math.sin(angle);
+    return center.y + radius * Math.sin(angle);
 }
 
-function Particle(angle, radius, direction)
+function Particle(Layer, angle)
 {
-    var x = findX(angle, radius);
-    var y = findY(angle, radius);
+    if (typeof Layer.center == 'undefined') {
+        Layer.center = {};
+        Layer.center.x = circleCenterX;
+        Layer.center.y = circleCenterY;
+    }
 
-    this.radius = radius;
-    this.startRadius = radius;
+    var x = findX(angle, Layer.radius, Layer.center);
+    var y = findY(angle, Layer.radius, Layer.center);
 
-    this.direction = direction;
+    this.radius = Layer.radius;
+    //this.startRadius = Layer.radius;
+
+    this.Layer = Layer;
+
+    this.direction = Layer.direction;
 
     // coordinates
     this.location = {x: x, y: y};
@@ -169,11 +141,26 @@ function generateConnectionMap(particles) {
 }
 
 function generateConnectionColorMap() {
+    var lineColorsArray = options.lineColors;
     var numConnections = connectionMap.length;
-    var numColors = options.lineColors.length;
+    var numColors = lineColorsArray.length;
+
+    if (options.generateLineColors) {
+        lineColorsArray = [];
+        numColors = 0;
+
+        var numColorsToGenerate = options.numColorsGenerate ? options.numColorsGenerate : options.layers[0].numPoints/2;
+
+        for (var i = 0; i < numColorsToGenerate; i++) {
+            var hex = Math.floor(Math.random()*(255*255*255)).toString(16);
+            var paddedHex = String('0' + hex).slice(-6);
+            lineColorsArray.push('#'+paddedHex);
+            numColors++;
+        }
+    }
+
     connectionColorMap = [];
 
-    var lineColorsArray = options.lineColors;
     while (numColors < numConnections) {
         lineColorsArray = lineColorsArray.concat(lineColorsArray);
         numColors = lineColorsArray.length;
@@ -264,14 +251,14 @@ function draw()
 
         particles[i].angle = p.angle;
         //particles[i].radius = Math.abs(p.startRadius * Math.sin(p.angle));
-        particles[i].location.x = findX(p.angle, p.radius);
-        particles[i].location.y = findY(p.angle, p.radius);
+        particles[i].location.x = findX(p.angle, p.Layer.radius, p.Layer.center);
+        particles[i].location.y = findY(p.angle, p.Layer.radius, p.Layer.center);
     }
 
     generateConnectionMap(particles);
 
     if (options.colorChangeOnDraw) {
-        generateConnectionColorMap(particles);
+        generateConnectionColorMap();
     }
 
     // semi-randomly take or add particles

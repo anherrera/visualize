@@ -1,29 +1,84 @@
-function registerFormChange(option, value) {
+function setOption(option, value) {
     options[option] = value;
     init();
 }
 
+function setLayerOption(layerIdx, key, value) {
+    console.log(layerIdx);
+    console.log(options.layers[layerIdx]);
+
+    options.layers[layerIdx][key] = value;
+    init();
+}
+
+function initMenu(options) {
+    for (idx = 0; idx < options.layers.length; idx++) {
+        var layerContainer = $('<div id="layer'+idx+'"/>');
+
+        var radiusField = $('<div class="form-field" />');
+        var radiusFieldLabel = $('<label>Layer '+(idx+1)+' Radius</label>');
+        var radiusFieldSlider = $('<div class="slider" data-idx="'+idx+'" data-attr="radius" />');
+        var clearDiv = $('<div class="clear" />');
+        radiusFieldLabel.appendTo(radiusField);
+        radiusFieldSlider.appendTo(radiusField);
+        clearDiv.appendTo(radiusField);
+
+        var numPointsField = $('<div class="form-field" />');
+        var numPointsFieldLabel = $('<label>Layer '+(idx+1)+' Num Points</label>');
+        var numPointsFieldSlider = $('<div class="slider" data-idx="'+idx+'" data-attr="numPoints" />');
+        var clearDiv = $('<div class="clear" />');
+        numPointsFieldLabel.appendTo(numPointsField);
+        numPointsFieldSlider.appendTo(numPointsField);
+        clearDiv.appendTo(numPointsField);
+
+        radiusField.appendTo(layerContainer);
+        numPointsField.appendTo(layerContainer);
+
+        layerContainer.appendTo($('#layerBox'));
+    }
+
+    $.each([
+        'connectOnSameLayer',
+        'connectOnDiffLayer',
+        'connectToCenter',
+        'randomColors',
+        'colorChangeOnDraw',
+        'generateLineColors'
+    ], function(idx, name) {
+        $('#' + name).val(options[name] === true ? '1' : '0');
+    });
+
+    $.each([
+        'connectionStyle',
+        'quadraticStyle'
+    ], function(idx, name) {
+        $('#' + name).val(options[name]);
+    });
+}
+
 $().ready(function() {
+    initMenu(options);
+
     $('#fadeOut').slider({
         value: options.fadeOut,
-        min: 0.025,
+        min: 0.1,
         max: 1,
-        step: 0.025,
+        step: 0.1,
         slide: function(evt, ui) {
-            registerFormChange('fadeOut', ui.value);
+            setOption('fadeOut', ui.value);
         }
     });
 
     $('#connectOnSameLayer').change(function() {
-        registerFormChange('connectOnSameLayer', $(this).val() == '1');
+        setOption('connectOnSameLayer', $(this).val() == '1');
     });
 
     $('#connectOnDiffLayer').change(function() {
-        registerFormChange('connectOnDiffLayer', $(this).val() == '1');
+        setOption('connectOnDiffLayer', $(this).val() == '1');
     });
 
     $('#connectToCenter').change(function() {
-        registerFormChange('connectToCenter', $(this).val() == '1');
+        setOption('connectToCenter', $(this).val() == '1');
     });
 
     $('#pointSpeed').slider({
@@ -32,7 +87,7 @@ $().ready(function() {
         max: 5,
         step: 1,
         slide: function(evt, ui) {
-            registerFormChange('pointSpeed', ui.value);
+            setOption('pointSpeed', ui.value);
         }
     });
 
@@ -42,12 +97,12 @@ $().ready(function() {
         max: 5,
         step: 1,
         slide: function(evt, ui) {
-            registerFormChange('lineDistanceFactor', ui.value);
+            setOption('lineDistanceFactor', ui.value);
         }
     });
 
     $('#randomColors').change(function() {
-        registerFormChange('randomColors', $(this).val() == '1');
+        setOption('randomColors', $(this).val() == '1');
     });
 
     $('#colorChangeOnDraw').change(function() {
@@ -55,11 +110,25 @@ $().ready(function() {
             $('#randomColors').val(1).change();
         }
 
-        registerFormChange('colorChangeOnDraw', $(this).val() == '1');
+        setOption('colorChangeOnDraw', $(this).val() == '1');
+    });
+
+    $('#generateLineColors').change(function() {
+        setOption('generateLineColors', $(this).val() == '1');
+    });
+
+    $('#numColorsGenerate').slider({
+        value: options.numColorsGenerate,
+        min: 1,
+        max: 24,
+        step: 1,
+        slide: function(evt, ui) {
+            setOption('numColorsGenerate', ui.value);
+        }
     });
 
     $('#connectionStyle').change(function() {
-        registerFormChange('connectionStyle', $(this).val());
+        setOption('connectionStyle', $(this).val());
     });
 
     $('#quadraticStyle').change(function() {
@@ -67,6 +136,39 @@ $().ready(function() {
             $('#connectionStyle').val('quadratic').change();
         }
 
-        registerFormChange('quadraticStyle', $(this).val());
+        setOption('quadraticStyle', $(this).val());
+    });
+
+    $('#regenerateColorScheme').click(function() {
+        init();
+    });
+
+    $('#layerBox').find('.slider').each(function() {
+        var idx = $(this).data('idx');
+        var attr = $(this).data('attr');
+
+        if (attr == 'radius') {
+            var value = options.layers[idx].radius;
+            var min = 100;
+            var max = 800;
+            var step = 100;
+        }
+
+        if (attr == 'numPoints') {
+            var value = options.layers[idx].numPoints;
+            var min = 1;
+            var max = 24;
+            var step = 1;
+        }
+
+        $(this).slider({
+            value: value,
+            min: min,
+            max: max,
+            step: step,
+            slide: function(evt, ui) {
+                setLayerOption(idx, attr, ui.value);
+            }
+        });
     });
 });

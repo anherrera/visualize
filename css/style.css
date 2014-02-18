@@ -3,6 +3,65 @@
     padding: 0;
 }
 
+body { overflow: hidden; }
+
+a {
+    color: white;
+}
+
+#overlay {
+    width: 100%;
+    height: 2000px;
+    position: absolute;
+    z-index: 9999;
+}
+    #overlay .panel {
+        height: 100%;
+        background-color: rgba(0,0,0,0.6);
+        float: left;
+        width: 35%;
+    }
+    #overlay .content {
+        padding: 150px 5%;
+        text-align: center;
+        height: 100%;
+        float: left;
+        width: 20%;
+        background-color: rgba(0,0,0,0.9);
+        color: white;
+        font-size: 16px;
+        font-family: "Helvetic Neue", Helvetica, Arial, sans-serif;
+    }
+        #overlay .content h1 {
+            color: #880044;
+        }
+
+        #overlay .content .cta {
+            display: block;
+            text-align: center;
+            margin-top: 50px;
+        }
+            #overlay .content .cta button {
+                padding: 15px 10px;
+                font-size: 18px;
+                text-shadow: 1px 1px 3px #000;
+                background-color: #440088;
+                background: rgb(68,0,136);
+                background: -moz-linear-gradient(top,  rgba(68,0,136,1) 0%, rgba(136,0,68,1) 100%);
+                background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(68,0,136,1)), color-stop(100%,rgba(136,0,68,1)));
+                background: -webkit-linear-gradient(top,  rgba(68,0,136,1) 0%,rgba(136,0,68,1) 100%);
+                background: -o-linear-gradient(top,  rgba(68,0,136,1) 0%,rgba(136,0,68,1) 100%);
+                background: -ms-linear-gradient(top,  rgba(68,0,136,1) 0%,rgba(136,0,68,1) 100%);
+                background: linear-gradient(to bottom,  rgba(68,0,136,1) 0%,rgba(136,0,68,1) 100%);
+                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#440088', endColorstr='#880044',GradientType=0 );
+                border: 1px solid #000;
+                border-radius: 10px;
+                color: white;
+                text-transform: uppercase;
+                font-family: Times New Roman, serif;
+                letter-spacing: 2px;
+            }
+
 #canvas {
     display: block;
     background: #000;
@@ -20,6 +79,7 @@
 }
 
 #menu {
+    display:none;
     border-radius: 5px;
     padding: 15px 10px 5px;
     width: 300px;
