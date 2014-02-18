@@ -130,5 +130,50 @@ var presets = [
         numColorsGenerate: 5,
         connectionStyle: 'linear',
         quadraticStyle: 'daisy'
+    },
+    {
+        fadeOut: 1,
+        layers: [
+            {
+                radius:500,
+                direction:"ccw",
+                numPoints:10,
+                center: {
+                    x: 960,
+                    y: 482.5
+                }
+            },
+            {
+                radius:300,
+                direction:"ccw",
+                numPoints:11,
+                center: {
+                    x: 960,
+                    y: 482.5
+                }
+            },
+            {
+                radius:500,
+                direction:"cw",
+                numPoints:24,
+                center: {
+                    x:960,
+                    y:482.5
+                }
+            }
+        ],
+        connectOnSameLayer:false,
+        connectOnDiffLayer:true,
+        connectToCenter:false,
+        pointSize:0,
+        pointSpeed:1,
+        lineDistanceFactor:1,
+        randomColors:false,
+        colorChangeOnDraw:false,
+        lineColors:[],
+        generateLineColors:true,
+        numColorsGenerate:3,
+        connectionStyle:"quadratic",
+        quadraticStyle:"rose"
     }
 ];

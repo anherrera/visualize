@@ -4,9 +4,6 @@ function setOption(option, value) {
 }
 
 function setLayerOption(layerIdx, key, value) {
-    console.log(layerIdx);
-    console.log(options.layers[layerIdx]);
-
     options.layers[layerIdx][key] = value;
     init();
 }
