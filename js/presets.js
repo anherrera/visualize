@@ -135,45 +135,66 @@ var presets = [
         fadeOut: 1,
         layers: [
             {
-                radius:500,
-                direction:"ccw",
-                numPoints:10,
-                center: {
-                    x: 960,
-                    y: 482.5
-                }
+                radius: 500,
+                direction: 'ccw',
+                numPoints: 10
             },
             {
-                radius:300,
-                direction:"ccw",
-                numPoints:11,
-                center: {
-                    x: 960,
-                    y: 482.5
-                }
+                radius: 300,
+                direction: 'ccw',
+                numPoints: 11
             },
             {
-                radius:500,
-                direction:"cw",
-                numPoints:24,
-                center: {
-                    x:960,
-                    y:482.5
-                }
+                radius: 500,
+                direction: 'cw',
+                numPoints: 24
             }
         ],
-        connectOnSameLayer:false,
-        connectOnDiffLayer:true,
-        connectToCenter:false,
-        pointSize:0,
-        pointSpeed:1,
-        lineDistanceFactor:1,
-        randomColors:false,
-        colorChangeOnDraw:false,
-        lineColors:[],
-        generateLineColors:true,
-        numColorsGenerate:3,
-        connectionStyle:"quadratic",
-        quadraticStyle:"rose"
+        connectOnSameLayer: false,
+        connectOnDiffLayer: true,
+        connectToCenter: false,
+        pointSize: 0,
+        pointSpeed: 1,
+        lineDistanceFactor: 1,
+        randomColors: false,
+        colorChangeOnDraw: false,
+        lineColors: [],
+        generateLineColors: true,
+        numColorsGenerate: 3,
+        connectionStyle: 'quadratic',
+        quadraticStyle: 'rose'
+    },
+    {
+        fadeOut: 1,
+        layers: [
+            {
+                radius: 200,
+                direction: 'cw',
+                numPoints: 24
+            },
+            {
+                radius: 200,
+                direction: 'ccw',
+                numPoints: 6
+            },
+            {
+                radius: 800,
+                direction: 'cw',
+                numPoints: 24
+            }
+        ],
+        connectOnSameLayer: false,
+        connectOnDiffLayer: true,
+        connectToCenter: false,
+        pointSize: 0,
+        pointSpeed: 1,
+        lineDistanceFactor: 1,
+        randomColors: false,
+        colorChangeOnDraw: false,
+        lineColors: [],
+        generateLineColors: true,
+        numColorsGenerate: 24,
+        connectionStyle: 'quadratic',
+        quadraticStyle: 'rose'
     }
 ];

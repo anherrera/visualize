@@ -161,13 +161,15 @@ function generateConnectionColorMap() {
 
     connectionColorMap = [];
 
-    while (numColors < numConnections) {
-        lineColorsArray = lineColorsArray.concat(lineColorsArray);
-        numColors = lineColorsArray.length;
+    if (numColors > 0) {
+        while (numColors < numConnections) {
+            lineColorsArray = lineColorsArray.concat(lineColorsArray);
+            numColors = lineColorsArray.length;
+        }
     }
 
     for (var j = 0; j < numConnections; j++) {
-        if (options.randomColors) {
+        if (options.randomColors || numColors == 0) {
             var r = Math.round(Math.random()*255);
             var g = Math.round(Math.random()*255);
             var b = Math.round(Math.random()*255);
