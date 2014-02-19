@@ -113,6 +113,10 @@ $().ready(function() {
     });
 
     $('#generateLineColors').change(function() {
+        if ($(this).val() == '0') {
+            $('#randomColors').val(1).change();
+        }
+
         setOption('generateLineColors', $(this).val() == '1');
     });
 
