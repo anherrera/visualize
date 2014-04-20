@@ -17,7 +17,7 @@ var options = {
     varyRadius: false
 };
 
-options = presets[Math.round(Math.random() * (presets.length-1))];
+options = presets[presets.length -1];//presets[Math.round(Math.random() * (presets.length-1))];
 
 var particles;
 var connectionMap;
@@ -40,7 +40,7 @@ function init() {
 
         for (i = 0; i < r.numPoints; i++) {
             var angle = Math.PI*2 * (i / r.numPoints);
-            var newParticle = new Particle(options.layers[n], angle);
+            var newParticle = new Particle(options.layers[n], angle, n, i);
             particles.push(newParticle);
         }
     }
@@ -74,7 +74,7 @@ function findY(angle, radius, center) {
     return center.y + radius * Math.sin(angle);
 }
 
-function Particle(Layer, angle)
+function Particle(Layer, angle, layerIdx, particleInLayerIdx)
 {
     if (typeof Layer.center == 'undefined') {
         Layer.center = {};
@@ -88,6 +88,9 @@ function Particle(Layer, angle)
     this.radius = Layer.radius;
     //this.startRadius = Layer.radius;
 
+    this.layerIdx = layerIdx;
+    this.particleInLayerIdx = particleInLayerIdx;
+
     this.Layer = Layer;
 
     this.direction = Layer.direction;
@@ -99,7 +102,7 @@ function Particle(Layer, angle)
     this.size = options.pointSize;
 
     // speed at which it moves around the "circle"
-    this.speed = options.pointSpeed;
+    this.speed = Layer.pointSpeed ? Layer.pointSpeed : options.pointSpeed;
 
     // angle placement along the circle
     this.angle = angle;

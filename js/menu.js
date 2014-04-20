@@ -1,11 +1,11 @@
 function setOption(option, value) {
-    ga('send', 'event', 'option', 'set ' + option + ' to ' + value);
+    //ga('send', 'event', 'option', 'set ' + option + ' to ' + value);
     options[option] = value;
     init();
 }
 
 function setLayerOption(layerIdx, key, value) {
-    ga('send', 'event', 'layerOption', 'layer' + layerIdx + ' ' + key + ' set to ' + value);
+    //ga('send', 'event', 'layerOption', 'layer' + layerIdx + ' ' + key + ' set to ' + value);
     options.layers[layerIdx][key] = value;
     init();
 }
