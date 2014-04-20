@@ -19,7 +19,7 @@ var options = {
     connectOnlyToParents: false
 };
 
-options = presets[presets.length -1];//presets[Math.round(Math.random() * (presets.length-1))];
+options = presets[Math.round(Math.random() * (presets.length-1))];
 
 var particles;
 var particleMatrix;
