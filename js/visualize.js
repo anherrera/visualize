@@ -20,6 +20,7 @@ var options = {
 options = presets[presets.length -1];//presets[Math.round(Math.random() * (presets.length-1))];
 
 var particles;
+var particleMatrix;
 var connectionMap;
 var connectionColorMap;
 var timesDrawn;
@@ -36,15 +37,17 @@ function init() {
     connectionColorMap = [];
 
     for (var n = 0; n < options.layers.length; n++) {
-        r = options.layers[n];
+        var r = options.layers[n];
 
-        for (i = 0; i < r.numPoints; i++) {
+        for (var i = 0; i < r.numPoints; i++) {
             var angle = Math.PI*2 * (i / r.numPoints);
             var newParticle = new Particle(options.layers[n], angle, n, i);
             particles.push(newParticle);
         }
     }
 
+    generateParticleMatrix(particles);
+    positionParticles();
     generateConnectionMap(particles);
     generateConnectionColorMap();
 
@@ -52,38 +55,15 @@ function init() {
 }
 init();
 
-// Find x coordinates of point on the circle given angle (uses circleRadius)
-function findX(angle, radius, center) {
-    if (center.mutable) {
-        var particle = particles[center.particleIdx];
-        center.x = particle.location.x;
-    }
-
-    if (center.x) {
-        return center.x + radius * Math.cos(angle);
-    }
-}
-
-// Find y coordinates of point on the circle given angle (uses circleRadius)
-function findY(angle, radius, center) {
-    if (center.mutable) {
-        var particle = particles[center.particleIdx];
-        center.y = particle.location.y;
-    }
-
-    return center.y + radius * Math.sin(angle);
-}
-
 function Particle(Layer, angle, layerIdx, particleInLayerIdx)
 {
+    var self = this;
+
     if (typeof Layer.center == 'undefined') {
         Layer.center = {};
         Layer.center.x = circleCenterX;
         Layer.center.y = circleCenterY;
     }
-
-    var x = findX(angle, Layer.radius, Layer.center);
-    var y = findY(angle, Layer.radius, Layer.center);
 
     this.radius = Layer.radius;
     //this.startRadius = Layer.radius;
@@ -95,9 +75,6 @@ function Particle(Layer, angle, layerIdx, particleInLayerIdx)
 
     this.direction = Layer.direction;
 
-    // coordinates
-    this.location = {x: x, y: y};
-
     // radius of the particle - zero for invisible
     this.size = options.pointSize;
 
@@ -106,6 +83,37 @@ function Particle(Layer, angle, layerIdx, particleInLayerIdx)
 
     // angle placement along the circle
     this.angle = angle;
+
+    this.location = {};
+
+    // coordinates
+    //var x = findX(self);
+    //var y = findY(self);
+    //this.location = {x: x, y: y};
+}
+
+function generateParticleMatrix(particles) {
+    var matrixStart = [];
+    for (var i = 0; i < particles.length; i++) {
+        var p = particles[i];
+
+        if (typeof matrixStart[p.layerIdx] === 'undefined') {
+            matrixStart[p.layerIdx] = [];
+        }
+
+        matrixStart[p.layerIdx][p.particleInLayerIdx] = p;
+    }
+
+    particleMatrix = matrixStart;
+}
+
+function positionParticles() {
+    for (var i = 0; i < particles.length; i++) {
+        var x = findX(particles[i]);
+        var y = findY(particles[i]);
+        particles[i].location.x = x;
+        particles[i].location.y = y;
+    }
 }
 
 function generateConnectionMap(particles) {
@@ -193,6 +201,52 @@ function generateConnectionColorMap() {
     }
 }
 
+// Find x coordinates of point on the circle given angle (uses circleRadius)
+function findX(particle) {
+    var angle = particle.angle;
+    var radius = particle.radius;
+    var center = particle.Layer.center;
+
+    if (center.mutable) {
+        if (typeof center.particleIdx != 'undefined') {
+            var parentParticle = particles[center.particleIdx];
+            center.x = parentParticle.location.x;
+        }
+
+        if (typeof center.layerIdx != 'undefined') {
+            var currentParticleIdx = particle.particleInLayerIdx;
+            parentParticle = particleMatrix[center.layerIdx][currentParticleIdx];
+
+            console.log(parentParticle);
+
+            center.x = parentParticle.location.x;
+        }
+    }
+
+    return center.x + radius * Math.cos(angle);
+}
+
+// Find y coordinates of point on the circle given angle (uses circleRadius)
+function findY(particle) {
+    var angle = particle.angle;
+    var radius = particle.radius;
+    var center = particle.Layer.center;
+
+    if (center.mutable) {
+        if (typeof center.particleIdx != 'undefined') {
+            var parentParticle = particles[center.particleIdx];
+            center.y = parentParticle.location.y;
+        }
+
+        if (typeof center.layerIdx != 'undefined') {
+            var currentParticleIdx = particle.particleInLayerIdx;
+            parentParticle = particleMatrix[center.layerIdx][currentParticleIdx];
+            center.y = parentParticle.location.y;
+        }
+    }
+    return center.y + radius * Math.sin(angle);
+}
+
 // connect all the particles and move them
 function draw()
 {
@@ -256,8 +310,8 @@ function draw()
 
         particles[i].angle = p.angle;
         //particles[i].radius = Math.abs(p.startRadius * Math.sin(p.angle));
-        particles[i].location.x = findX(p.angle, p.Layer.radius, p.Layer.center);
-        particles[i].location.y = findY(p.angle, p.Layer.radius, p.Layer.center);
+        particles[i].location.x = findX(p);
+        particles[i].location.y = findY(p);
     }
 
     generateConnectionMap(particles);
