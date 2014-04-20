@@ -13,8 +13,10 @@ circleCenterY = H/2;
 var options = {
     // TODO outline only @depends connectOnSameLayer
     outlineOnly: true,
-    // TODO change the radius as the points move
-    varyRadius: false
+    // TODO connect only siblings (have same particle parent)
+    connectOnlyToSiblings: false,
+    // TODO connect only to Parents
+    connectOnlyToParents: false
 };
 
 options = presets[presets.length -1];//presets[Math.round(Math.random() * (presets.length-1))];
@@ -76,7 +78,7 @@ function Particle(Layer, angle, layerIdx, particleInLayerIdx)
     this.direction = Layer.direction;
 
     // radius of the particle - zero for invisible
-    this.size = options.pointSize;
+    this.size = Layer.pointSize ? Layer.pointSize : options.pointSize;
 
     // speed at which it moves around the "circle"
     this.speed = Layer.pointSpeed ? Layer.pointSpeed : options.pointSpeed;
@@ -130,11 +132,25 @@ function generateConnectionMap(particles) {
                 y2: particles[n].location.y
             };
 
-            if (options.connectOnSameLayer && particles[i].radius == particles[n].radius) {
-                connectionMap.push(newConnection);
+            if (options.connectOnSameLayer && particles[i].layerIdx == particles[n].layerIdx) {
+                var makeConnection = true;
+
+                if (options.outlineOnly) {
+                    if (Math.abs(particles[i].particleInLayerIdx - particles[n].particleInLayerIdx) != 1) {
+                        makeConnection = false;
+
+                        if (particles[i].particleInLayerIdx == 0 && particles[n].particleInLayerIdx == (particles[n].Layer.numPoints - 1)) {
+                            makeConnection = true;
+                        }
+                    }
+                }
+
+                if (makeConnection) {
+                    connectionMap.push(newConnection);
+                }
             }
 
-            if (options.connectOnDiffLayer && particles[i].radius !== particles[n].radius) {
+            if (options.connectOnDiffLayer && particles[i].layerIdx !== particles[n].layerIdx) {
                 connectionMap.push(newConnection);
             }
         }
@@ -215,10 +231,7 @@ function findX(particle) {
 
         if (typeof center.layerIdx != 'undefined') {
             var currentParticleIdx = particle.particleInLayerIdx;
-            parentParticle = particleMatrix[center.layerIdx][currentParticleIdx];
-
-            console.log(parentParticle);
-
+            parentParticle = grabParentParticle(center.layerIdx, currentParticleIdx);
             center.x = parentParticle.location.x;
         }
     }
@@ -240,11 +253,21 @@ function findY(particle) {
 
         if (typeof center.layerIdx != 'undefined') {
             var currentParticleIdx = particle.particleInLayerIdx;
-            parentParticle = particleMatrix[center.layerIdx][currentParticleIdx];
+            parentParticle = grabParentParticle(center.layerIdx, currentParticleIdx);
             center.y = parentParticle.location.y;
         }
     }
     return center.y + radius * Math.sin(angle);
+}
+
+function grabParentParticle(parentLayerIdx, particleIdx) {
+    var parentParticle = particleMatrix[parentLayerIdx][particleIdx];
+    while (typeof parentParticle != 'object') {
+        particleIdx -= options.layers[parentLayerIdx].numPoints;
+        parentParticle = particleMatrix[parentLayerIdx][particleIdx];
+    }
+
+    return parentParticle;
 }
 
 // connect all the particles and move them
@@ -293,6 +316,7 @@ function draw()
         var p = particles[i];
         ctx.fillStyle = "white";
         ctx.fillRect(p.location.x, p.location.y, p.size, p.size);
+        //ctx.fillText(p.particleInLayerIdx, p.location.x + 5, p.location.y + 5);
 
         // move the particles around our circle
         if (p.direction == 'cw') {

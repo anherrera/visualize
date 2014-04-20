@@ -198,37 +198,37 @@ var presets = [
         quadraticStyle: 'rose'
     },
     {
-        fadeOut: 0.05,
+        fadeOut: 0.1,
         layers: [
             {
                 radius: 200,
                 direction: 'cw',
-                numPoints: 2
+                numPoints: 4
             },
             {
-                radius: 100,
+                radius: 200,
                 center: {
                     mutable: true,
-                    particleIdx: 0,
                     layerIdx: 0
                 },
                 direction: 'ccw',
-                numPoints: 2,
+                numPoints: 16,
                 pointSpeed: 3
             }
         ],
         connectOnSameLayer: false,
-        connectOnDiffLayer: false,
+        connectOnDiffLayer: true,
         connectToCenter: false,
-        pointSize: 4,
+        pointSize: 0,
         pointSpeed: 1,
         lineDistanceFactor: 1,
         randomColors: false,
         colorChangeOnDraw: false,
         lineColors: [],
         generateLineColors: true,
-        numColorsGenerate: 5,
+        numColorsGenerate: 4,
         connectionStyle: 'linear',
-        quadraticStyle: 'rose'
+        quadraticStyle: 'rose',
+        outlineOnly: true
     }
 ];
