@@ -198,7 +198,7 @@ var presets = [
         quadraticStyle: 'rose'
     },
     {
-        fadeOut: 0.1,
+        fadeOut: 0.5,
         layers: [
             {
                 radius: 200,
@@ -206,14 +206,78 @@ var presets = [
                 numPoints: 4
             },
             {
-                radius: 200,
+                radius: 100,
                 center: {
                     mutable: true,
                     layerIdx: 0
                 },
                 direction: 'ccw',
-                numPoints: 16,
+                numPoints: 4,
                 pointSpeed: 3
+            },
+            {
+                radius: 50,
+                center: {
+                    mutable: true,
+                    layerIdx: 1
+                },
+                direction: 'ccw',
+                numPoints: 4,
+                pointSpeed: 3
+            },
+            {
+                radius: 200,
+                center: {
+                    mutable: true,
+                    layerIdx: 1
+                },
+                direction: 'cw',
+                numPoints: 4,
+                pointSpeed: 3
+            }
+        ],
+        connectOnSameLayer: false,
+        connectOnDiffLayer: true,
+        connectToCenter: false,
+        pointSize: 5,
+        pointSpeed: 1,
+        lineDistanceFactor: 1,
+        randomColors: false,
+        colorChangeOnDraw: false,
+        lineColors: [],
+        generateLineColors: true,
+        numColorsGenerate: 2,
+        connectionStyle: 'linear',
+        quadraticStyle: 'rose',
+        outlineOnly: true
+    },
+    {
+        fadeOut: 0.1,
+        layers: [
+            {
+                radius: 300,
+                direction: 'cw',
+                numPoints: 3
+            },
+            {
+                radius: 300,
+                center: {
+                    mutable: true,
+                    layerIdx: 0
+                },
+                direction: 'ccw',
+                numPoints: 3,
+                pointSpeed: 2
+            },
+            {
+                radius: 100,
+                center: {
+                    mutable: true,
+                    layerIdx: 1
+                },
+                direction: 'ccw',
+                numPoints: 3,
+                pointSpeed: 2
             }
         ],
         connectOnSameLayer: false,
@@ -226,7 +290,105 @@ var presets = [
         colorChangeOnDraw: false,
         lineColors: [],
         generateLineColors: true,
-        numColorsGenerate: 4,
+        numColorsGenerate: 2,
+        connectionStyle: 'quadratic',
+        quadraticStyle: 'rose',
+        outlineOnly: true
+    },
+    {
+        fadeOut: 0.5,
+        layers: [
+            {
+                radius: 300,
+                direction: 'cw',
+                numPoints: 6
+            },
+            {
+                radius: 100,
+                center: {
+                    mutable: true,
+                    layerIdx: 0
+                },
+                direction: 'ccw',
+                numPoints: 6,
+                pointSpeed: 4
+            },
+            {
+                radius: 100,
+                center: {
+                    mutable: true,
+                    layerIdx: 1
+                },
+                direction: 'cw',
+                numPoints: 6,
+                pointSpeed: 4
+            }
+        ],
+        connectOnSameLayer: false,
+        connectOnDiffLayer: true,
+        connectToCenter: false,
+        pointSize: 0,
+        pointSpeed: 1,
+        lineDistanceFactor: 1,
+        randomColors: false,
+        colorChangeOnDraw: false,
+        lineColors: [],
+        generateLineColors: true,
+        numColorsGenerate: 3,
+        connectionStyle: 'quadratic',
+        quadraticStyle: 'rose',
+        outlineOnly: true
+    },
+    {
+        fadeOut: 0.1,
+        layers: [
+            {
+                radius: 200,
+                direction: 'cw',
+                numPoints: 4
+            },
+            {
+                radius: 100,
+                center: {
+                    mutable: true,
+                    layerIdx: 0
+                },
+                direction: 'ccw',
+                numPoints: 4,
+                pointSpeed: 1
+            },
+            {
+                radius: 50,
+                center: {
+                    mutable: true,
+                    layerIdx: 1
+                },
+                direction: 'cw',
+                numPoints: 4,
+                pointSpeed: 3
+            },
+            {
+                radius: 100,
+                center: {
+                    mutable: true,
+                    layerIdx: 1
+                },
+                direction: 'ccw',
+                numPoints: 4,
+                pointSpeed: 4
+            }
+        ],
+        connectOnSameLayer: true,
+        connectOnDiffLayer: false,
+        connectToCenter: false,
+        pointSize: 1,
+        pointSpeed: 1,
+        lineDistanceFactor: 2,
+        randomColors: false,
+        colorChangeOnDraw: false,
+        lineColors: [],
+        generateLineColors: true,
+        numColorsGenerate: 3,
         connectionStyle: 'linear',
         quadraticStyle: 'rose',
         outlineOnly: true

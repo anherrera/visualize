@@ -55,7 +55,6 @@ function init() {
 
     timesDrawn = 0;
 }
-init();
 
 function Particle(Layer, angle, layerIdx, particleInLayerIdx)
 {
@@ -87,11 +86,6 @@ function Particle(Layer, angle, layerIdx, particleInLayerIdx)
     this.angle = angle;
 
     this.location = {};
-
-    // coordinates
-    //var x = findX(self);
-    //var y = findY(self);
-    //this.location = {x: x, y: y};
 }
 
 function generateParticleMatrix(particles) {
@@ -281,9 +275,6 @@ function draw()
         ctx.fillStyle = "rgba(0, 0, 0, "+ options.fadeOut +")";
         ctx.fillRect(0, 0, W, H);
 
-        //ctx.fillStyle = "black";
-        //ctx.fillRect(circleCenterX-3, circleCenterY-3, 6, 6);
-
         ctx.globalCompositeOperation = "lighter";
 
         for (var j = 0; j < connectionMap.length; j++) {
@@ -315,8 +306,7 @@ function draw()
     {
         var p = particles[i];
         ctx.fillStyle = "white";
-        ctx.fillRect(p.location.x, p.location.y, p.size, p.size);
-        //ctx.fillText(p.particleInLayerIdx, p.location.x + 5, p.location.y + 5);
+        ctx.fillRect(p.location.x - (p.size/2), p.location.y - (p.size/2), p.size, p.size);
 
         // move the particles around our circle
         if (p.direction == 'cw') {
@@ -333,7 +323,6 @@ function draw()
         }
 
         particles[i].angle = p.angle;
-        //particles[i].radius = Math.abs(p.startRadius * Math.sin(p.angle));
         particles[i].location.x = findX(p);
         particles[i].location.y = findY(p);
     }
@@ -343,20 +332,10 @@ function draw()
     if (options.colorChangeOnDraw) {
         generateConnectionColorMap();
     }
-
-    // semi-randomly take or add particles
-    /*if (Math.random() > .9) {
-     particles.push(new particle(2*Math.PI*Math.random()));
-     } else {
-     if (particles.length > numOfPoints) {
-     particles.shift();
-     }
-     }*/
-
-    //circleRadius = Math.random() * origCircleRadius;
-    //particles[i].radius = Math.cos(p.angle) * p.radius;
 }
 
+// --- AND NOW WE BEGIN!
+
+init();
 setInterval(draw, 30);
-//draw();
 //draw();
