@@ -197,6 +197,7 @@
                 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
         })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
+        //ga('create', 'UA-XXXXXXXX', 'lfhsdkjdfhfkds.com');
         ga('create', 'UA-47080739-2', 'weirdcoder.com');
         ga('send', 'pageview');
 
@@ -231,11 +232,11 @@
         }
 
         $().ready(function () {
-            if (readCookie('ctaclicked')) {
+            //if (readCookie('ctaclicked')) {
                 $('#menu').slideDown();
-            } else {
-                $('#overlay').fadeIn();
-            }
+            //} else {
+            //    $('#overlay').fadeIn();
+            //}
 
             $('.cta button').click(function () {
                 setCtaCookie();

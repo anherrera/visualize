@@ -6,20 +6,17 @@ var W = window.innerWidth, H = window.innerHeight;
 canvas.width = W;
 canvas.height = H;
 
-// set the center of our "circle" to the middle of hte canvas.
-circleCenterX = W/2;
-circleCenterY = H/2;
+var circleCenterX = 0;
+var circleCenterY = 0;
 
 var options = {
-    // TODO outline only @depends connectOnSameLayer
-    outlineOnly: true,
     // TODO connect only siblings (have same particle parent)
     connectOnlyToSiblings: false,
     // TODO connect only to Parents
     connectOnlyToParents: false
 };
 
-options = presets[Math.round(Math.random() * (presets.length-1))];
+options = presets[presets.length-1]; //presets[Math.round(Math.random() * (presets.length-1))];
 
 var particles;
 var particleMatrix;
@@ -28,6 +25,10 @@ var connectionColorMap;
 var timesDrawn;
 
 function init() {
+    // set the center of our "circle" to the middle of the canvas.
+    circleCenterX = W/2;
+    circleCenterY = H/2;
+
     // completely fill the mask in over existing drawings
     ctx.globalCompositeOperation = "source-over";
     ctx.fillStyle = "rgba(0, 0, 0, 1)";
@@ -335,6 +336,10 @@ function draw()
 }
 
 // --- AND NOW WE BEGIN!
+
+$(window).resize(function() {
+
+});
 
 init();
 setInterval(draw, 30);
