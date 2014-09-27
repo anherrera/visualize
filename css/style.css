@@ -80,7 +80,7 @@ a {
 
 #menu {
     font-size: 12px;
-    line-height: 11px;
+    line-height: 1.5;
     display:none;
     border-radius: 5px;
     padding: 0 10px;
@@ -110,4 +110,10 @@ a {
 .form-field .slider, .form-field select {
     float: right;
     width: 100px;
+    margin-right: 10px;
+}
+
+.collapser {
+    cursor: pointer;
+    padding: 5px 0;
 }

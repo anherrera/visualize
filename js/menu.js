@@ -1,7 +1,19 @@
 function setOption(option, value) {
     ga('send', 'event', 'option', 'set ' + option + ' to ' + value);
     options[option] = value;
-    init();
+
+    var nonDestructive = [
+        'fadeOut',
+        'pointSize',
+        'connectionStyle',
+        'quadraticStyle'
+    ];
+
+    if ($.inArray(option, nonDestructive) !== -1) {
+        adjustParticles();
+    } else {
+        init();
+    }
 }
 
 function setLayerOption(layerIdx, key, value) {
@@ -26,7 +38,18 @@ function setLayerOption(layerIdx, key, value) {
         options.layers[layerIdx][key] = value;
     }
 
-    init();
+    var nonDestructive = [
+        'radius',
+        'direction',
+        'pointSpeed',
+        'center.layerIdx'
+    ];
+
+    if ($.inArray(key, nonDestructive) !== -1) {
+        adjustParticles();
+    } else {
+        init();
+    }
 }
 
 function initMenu(options) {
@@ -95,7 +118,7 @@ function initMenu(options) {
         clearDiv = $('<div class="clear" />');
         clearDiv.appendTo(layerContainer);
 
-        $('<hr />').appendTo(layerContainer);
+        //$('<hr />').appendTo(layerContainer);
 
         layerContainer.css('margin', '10px 0 0 0');
         layerContainer.appendTo($('#layerBox'));
@@ -144,16 +167,6 @@ $().ready(function() {
     $('#connectToCenter').change(function() {
         setOption('connectToCenter', $(this).val() == '1');
     });
-
-    /*$('#pointSpeed').slider({
-        value: options.pointSpeed,
-        min: 1,
-        max: 5,
-        step: 1,
-        slide: function(evt, ui) {
-            setOption('pointSpeed', ui.value);
-        }
-    });*/
 
     $('#pointSize').slider({
         value: options.pointSize,

@@ -64,125 +64,129 @@
 
     <div id="menu">
         <form id="menu-form">
-            <div id="layerBox"></div>
+            <h4 class="collapser">
+                General
+                <span class="right ui-icon ui-icon-arrowthick-1-n"></span>
+            </h4>
 
-            <br/><hr/><br/>
+            <hr/><br/>
 
-            <div class="form-field">
-                <label>Fade Out Speed</label>
-                <div id="fadeOut" class="slider"></div>
-                <div class="clear"></div>
+            <div class="collapsible">
+
+                <div class="form-field">
+                    <label>Fade Out Speed</label>
+                    <div id="fadeOut" class="slider"></div>
+                    <div class="clear"></div>
+                </div>
+
+                <div class="form-field">
+                    <label>Point Size</label>
+                    <div id="pointSize" class="slider"></div>
+                    <div class="clear"></div>
+                </div>
+
+                <br/><hr/><br/>
+
+                <div class="form-field">
+                    <label>Connect Points on Same Layer</label>
+                    <select id="connectOnSameLayer">
+                        <option value="1">Yes</option>
+                        <option value="0">No</option>
+                    </select>
+                    <div class="clear"></div>
+                </div>
+
+                <div class="form-field">
+                    <label>Connect Differently Layered Points</label>
+                    <select id="connectOnDiffLayer">
+                        <option value="1">Yes</option>
+                        <option value="0">No</option>
+                    </select>
+                    <div class="clear"></div>
+                </div>
+
+                <div class="form-field">
+                    <label>Connect to Center</label>
+                    <select id="connectToCenter">
+                        <option value="1">Yes</option>
+                        <option value="0">No</option>
+                    </select>
+                    <div class="clear"></div>
+                </div>
+
+                <br/><hr/><br/>
+
+                <div class="form-field">
+                    <label>
+                        <a id="regenerateColorScheme" href="#" title="Click to regenerate color scheme">
+                            Generate Color Scheme
+                        </a>
+                    </label>
+                    <select id="generateLineColors">
+                        <option value="1">Yes</option>
+                        <option value="0">No</option>
+                    </select>
+                    <div class="clear"></div>
+                </div>
+
+                <div class="form-field">
+                    <label>Num Colors to Generate</label>
+                    <div class="slider" id="numColorsGenerate"></div>
+                    <div class="clear"></div>
+                </div>
+
+                <div style="text-align: center; padding-bottom: 10px">
+                    ------- OR -------
+                </div>
+
+                <div class="form-field">
+                    <label>Random Colors</label>
+                    <select id="randomColors">
+                        <option value="1">Yes</option>
+                        <option value="0">No</option>
+                    </select>
+                    <div class="clear"></div>
+                </div>
+
+                <div class="form-field">
+                    <label>Cycle Colors</label>
+                    <select id="colorChangeOnDraw">
+                        <option value="1">Yes</option>
+                        <option value="0">No</option>
+                    </select>
+                    <div class="clear"></div>
+                </div>
+
+                <br/><hr/><br/>
+
+                <div class="form-field">
+                    <label>Line Style</label>
+                    <select id="connectionStyle">
+                        <option value="linear">Linear</option>
+                        <option value="quadratic">Quadratic</option>
+                    </select>
+                    <div class="clear"></div>
+                </div>
+
+                <div class="form-field">
+                    <label>Pattern Style (quadratic)</label>
+                    <select id="quadraticStyle">
+                        <option value="daisy">"Daisy"</option>
+                        <option value="rose">"Rose"</option>
+                    </select>
+                    <div class="clear"></div>
+                </div>
+
+                <br/><hr/>
             </div>
 
-            <!--<div class="form-field">
-                <label>Speed</label>
-                <div id="pointSpeed" class="slider"></div>
-                <div class="clear"></div>
-            </div>-->
+            <h4 class="collapser">
+                Layers
+                <span class="right ui-icon ui-icon-arrowthick-1-n"></span>
+            </h4>
+            <hr/><br/>
 
-            <div class="form-field">
-                <label>Point Size</label>
-                <div id="pointSize" class="slider"></div>
-                <div class="clear"></div>
-            </div>
-
-            <div class="form-field">
-                <label>Line Spacing</label>
-                <div id="lineDistanceFactor" class="slider"></div>
-                <div class="clear"></div>
-            </div>
-
-            <br/><hr/><br/>
-
-            <div class="form-field">
-                <label>Connect Points on Same Layer</label>
-                <select id="connectOnSameLayer">
-                    <option value="1">Yes</option>
-                    <option value="0">No</option>
-                </select>
-                <div class="clear"></div>
-            </div>
-
-            <div class="form-field">
-                <label>Connect Differently Layered Points</label>
-                <select id="connectOnDiffLayer">
-                    <option value="1">Yes</option>
-                    <option value="0">No</option>
-                </select>
-                <div class="clear"></div>
-            </div>
-
-            <div class="form-field">
-                <label>Connect to Center</label>
-                <select id="connectToCenter">
-                    <option value="1">Yes</option>
-                    <option value="0">No</option>
-                </select>
-                <div class="clear"></div>
-            </div>
-
-            <br/><hr/><br/>
-
-            <div class="form-field">
-                <label>
-                    <a id="regenerateColorScheme" href="#" title="Click to regenerate color scheme">
-                        Generate Color Scheme
-                    </a>
-                </label>
-                <select id="generateLineColors">
-                    <option value="1">Yes</option>
-                    <option value="0">No</option>
-                </select>
-                <div class="clear"></div>
-            </div>
-
-            <div class="form-field">
-                <label>Num Colors to Generate</label>
-                <div class="slider" id="numColorsGenerate"></div>
-                <div class="clear"></div>
-            </div>
-
-            <div style="text-align: center; padding-bottom: 10px">
-                ------- OR -------
-            </div>
-
-            <div class="form-field">
-                <label>Random Colors</label>
-                <select id="randomColors">
-                    <option value="1">Yes</option>
-                    <option value="0">No</option>
-                </select>
-                <div class="clear"></div>
-            </div>
-
-            <div class="form-field">
-                <label>Cycle Colors</label>
-                <select id="colorChangeOnDraw">
-                    <option value="1">Yes</option>
-                    <option value="0">No</option>
-                </select>
-                <div class="clear"></div>
-            </div>
-
-            <br/><hr/><br/>
-
-            <div class="form-field">
-                <label>Line Style</label>
-                <select id="connectionStyle">
-                    <option value="linear">Linear</option>
-                    <option value="quadratic">Quadratic</option>
-                </select>
-                <div class="clear"></div>
-            </div>
-
-            <div class="form-field">
-                <label>Pattern Style (quadratic)</label>
-                <select id="quadraticStyle">
-                    <option value="daisy">"Daisy"</option>
-                    <option value="rose">"Rose"</option>
-                </select>
-                <div class="clear"></div>
-            </div>
+            <div id="layerBox" class="collapsible"></div>
         </form>
     </div>
 
@@ -197,7 +201,6 @@
                 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
         })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-        //ga('create', 'UA-XXXXXXXX', 'lfhsdkjdfhfkds.com');
         ga('create', 'UA-47080739-2', 'weirdcoder.com');
         ga('send', 'pageview');
 
@@ -232,6 +235,20 @@
         }
 
         $().ready(function () {
+
+            $('.collapser').click(function() {
+                var collapsible = $(this).nextAll('.collapsible').first();
+                collapsible.slideToggle(500, function() {
+                    var icon = collapsible.find('.ui-icon');
+
+                    if (collapsible.is(':visible')) {
+                        icon.removeClass('ui-icon-arrowthick-1-s').addClass('ui-icon-arrowthick-1-n');
+                    } else {
+                        icon.removeClass('ui-icon-arrowthick-1-n').addClass('ui-icon-arrowthick-1-s');
+                    }
+                });
+            });
+
             //if (readCookie('ctaclicked')) {
                 $('#menu').slideDown();
             //} else {

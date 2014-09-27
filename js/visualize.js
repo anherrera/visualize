@@ -89,6 +89,19 @@ function Particle(Layer, angle, layerIdx, particleInLayerIdx)
     this.location = {};
 }
 
+function adjustParticles() {
+    var j = 0;
+    for (var n = 0; n < options.layers.length; n++) {
+        var r = options.layers[n];
+
+        for (var i = 0; i < r.numPoints; i++) {
+            var angle = particles[j].angle;
+            particles[j] = new Particle(options.layers[n], angle, n, i);
+            j++;
+        }
+    }
+}
+
 function generateParticleMatrix(particles) {
     var matrixStart = [];
     for (var i = 0; i < particles.length; i++) {
@@ -270,37 +283,35 @@ function draw()
 {
     timesDrawn++;
 
-    if (timesDrawn % options.lineDistanceFactor === 0) {
-        // fill the mask in over existing drawings
-        ctx.globalCompositeOperation = "source-over";
-        ctx.fillStyle = "rgba(0, 0, 0, "+ options.fadeOut +")";
-        ctx.fillRect(0, 0, W, H);
+    // fill the mask in over existing drawings
+    ctx.globalCompositeOperation = "source-over";
+    ctx.fillStyle = "rgba(0, 0, 0, "+ options.fadeOut +")";
+    ctx.fillRect(0, 0, W, H);
 
-        ctx.globalCompositeOperation = "lighter";
+    ctx.globalCompositeOperation = "lighter";
 
-        for (var j = 0; j < connectionMap.length; j++) {
-            var connection = connectionMap[j];
-            var rgba = connectionColorMap[j].rgba;
+    for (var j = 0; j < connectionMap.length; j++) {
+        var connection = connectionMap[j];
+        var rgba = connectionColorMap[j].rgba;
 
-            ctx.beginPath();
-            ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.lineWidth = 1;
 
-            if (options.connectionStyle == 'linear') {
+        if (options.connectionStyle == 'linear') {
+            ctx.moveTo(connection.x1, connection.y1);
+            ctx.lineTo(connection.x2, connection.y2);
+        } else if (options.connectionStyle == 'quadratic') {
+            if (options.quadraticStyle == 'rose') {
                 ctx.moveTo(connection.x1, connection.y1);
-                ctx.lineTo(connection.x2, connection.y2);
-            } else if (options.connectionStyle == 'quadratic') {
-                if (options.quadraticStyle == 'rose') {
-                    ctx.moveTo(connection.x1, connection.y1);
-                    ctx.quadraticCurveTo(connection.x2, connection.y2, circleCenterX, circleCenterY);
-                } else if (options.quadraticStyle == 'daisy') {
-                    ctx.moveTo(circleCenterX, circleCenterY);
-                    ctx.quadraticCurveTo(connection.x1, connection.y1, connection.x2, connection.y2);
-                }
+                ctx.quadraticCurveTo(connection.x2, connection.y2, circleCenterX, circleCenterY);
+            } else if (options.quadraticStyle == 'daisy') {
+                ctx.moveTo(circleCenterX, circleCenterY);
+                ctx.quadraticCurveTo(connection.x1, connection.y1, connection.x2, connection.y2);
             }
-
-            ctx.strokeStyle = rgba;
-            ctx.stroke();
         }
+
+        ctx.strokeStyle = rgba;
+        ctx.stroke();
     }
 
     for(var i = 0; i < particles.length; i++)
@@ -336,11 +347,6 @@ function draw()
 }
 
 // --- AND NOW WE BEGIN!
-
-$(window).resize(function() {
-
-});
-
 init();
 setInterval(draw, 30);
 //draw();
