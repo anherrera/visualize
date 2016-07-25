@@ -1,4 +1,4 @@
-var presets = [
+var PRESETS = [
     {
         fadeOut: .1,
         layers: [
@@ -485,12 +485,27 @@ var presets = [
                 "pointSpeed": 8
             },
             {
-                "radius": 100, "center": {"mutable": true, "layerIdx": "0", "x": 910.0076152421308, "y": 483.37262031902196}, "direction": "ccw", "numPoints": 8, "pointSpeed": 3},
+                "radius": 100,
+                "center": {"mutable": true, "layerIdx": "0", "x": 910.0076152421308, "y": 483.37262031902196},
+                "direction": "ccw",
+                "numPoints": 8,
+                "pointSpeed": 3
+            },
             {
-                "radius": 50, "center": {"mutable": true, "layerIdx": "1", "x": 832.2930190970609, "y": 546.3046594247802}, "direction": "cw", "numPoints": 8, "pointSpeed": 4},
+                "radius": 50,
+                "center": {"mutable": true, "layerIdx": "1", "x": 832.2930190970609, "y": 546.3046594247802},
+                "direction": "cw",
+                "numPoints": 8,
+                "pointSpeed": 4
+            },
             {
-                "radius": 100, "center": {"mutable": true, "layerIdx": "2", "x": 851.8295755202004, "y": 592.3299020979644}, "direction": "ccw", "numPoints": 8, "pointSpeed": 2}
-    ],
+                "radius": 100,
+                "center": {"mutable": true, "layerIdx": "2", "x": 851.8295755202004, "y": 592.3299020979644},
+                "direction": "ccw",
+                "numPoints": 8,
+                "pointSpeed": 2
+            }
+        ],
         "connectOnSameLayer": false,
         "connectOnDiffLayer": false,
         "connectToCenter": false,
