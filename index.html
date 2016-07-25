@@ -46,7 +46,7 @@
 
             <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
                 <input type="hidden" name="cmd" value="_donations">
-                <input type="hidden" name="business" value="ansjolander@yahoo.com">
+                <input type="hidden" name="business" value="alexa.herrera90@gmail.com">
                 <input type="hidden" name="lc" value="US">
                 <input type="hidden" name="item_name" value="Alexa Herrera">
                 <input type="hidden" name="no_note" value="0">
@@ -264,12 +264,57 @@
         });
     </script>
 
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
+
+    <script id="layer-template" type="text/x-handlebars-template">
+        <div id="layer{{idx}}" style="margin: 10px 0px 0px;">
+            <div class="form-field">
+                <label>Layer {{idx}} Radius</label>
+                <div class="slider" data-idx="{{idx}}" data-attr="radius"></div>
+                <div class="clear"></div>
+            </div>
+            <div class="form-field">
+                <label>Layer {{idx}} Num Points</label>
+                <div class="slider" data-idx="{{idx}}" data-attr="numPoints"></div>
+                <div class="clear"></div>
+            </div>
+            <div class="form-field">
+                <label>Layer {{idx}} Direction</label>
+                <select data-attr="direction" data-idx="{{idx}}">
+                    <option value="cw">CW</option>
+                    <option value="ccw">CCW</option>
+                </select>
+                <div class="clear"></div>
+            </div>
+            <div class="form-field">
+                <label>Layer {{idx}} Points Rotate Around</label>
+                <select data-attr="center.layerIdx" data-idx="{{idx}}">
+                    <option value="">- NONE -</option>
+                    {{#each layer}}
+                    <option value="{{layer_idx}}">Points on Layer {{layer_idx}}</option>
+                    {{/each}}
+                </select>
+                <div class="clear"></div>
+            </div>
+            <div class="form-field"><label>Layer {{idx}} Point Speed</label>
+                <div class="slider" data-idx="{{idx}}" data-attr="pointSpeed"></div>
+                <div class="clear"></div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </script>
+    
     <script type="text/javascript" src="js/colors.min.js"></script>
     <script type="text/javascript" src="js/presets.js"></script>
     <script type="text/javascript" src="js/visualize.js"></script>
+    <script type="text/javascript" src="js/particle.js"></script>
     <script type="text/javascript" src="js/menu.js"></script>
 
-
+    <script type="text/javascript">
+        var V = new VISUALIZE(PRESETS);
+        var M = new MENU(PRESETS);
+        V.draw();
+    </script>
 
 </body>
 </html>

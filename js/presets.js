@@ -1,4 +1,4 @@
-var presets = [
+var PRESETS = [
     {
         fadeOut: .1,
         layers: [
