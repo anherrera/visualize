@@ -111,8 +111,8 @@ VISUALIZE.prototype.generateConnectionMap = function () {
             this.connectionMap.push({
                 x1: this.particles[i].location.x,
                 y1: this.particles[i].location.y,
-                x2: circleCenterX,
-                y2: circleCenterY,
+                x2: this.circleCenterX,
+                y2: this.circleCenterY,
                 rgba: 'rgba(255, 255, 255, 1)'
             });
         }
@@ -224,10 +224,10 @@ VISUALIZE.prototype.grabParentParticle = function (parentLayerIdx, particleIdx) 
 // connect all the particles and move them
 VISUALIZE.prototype._draw = function () {
     this.timesDrawn++;
-    
+
     console.log(this.canvas);
     console.log(this.ctx);
-    
+
     // fill the mask in over existing drawings
     this.ctx.globalCompositeOperation = "source-over";
     this.ctx.rect(0, 0, this.canvas.width, this.canvas.height);
@@ -249,7 +249,7 @@ VISUALIZE.prototype._draw = function () {
             if (this.options.quadraticStyle == 'rose') {
                 this.ctx.moveTo(connection.x1, connection.y1);
                 this.ctx.quadraticCurveTo(connection.x2, connection.y2, this.circleCenterX, this.circleCenterY);
-            } else if (options.quadraticStyle == 'daisy') {
+            } else if (this.options.quadraticStyle == 'daisy') {
                 this.ctx.moveTo(this.circleCenterX, this.circleCenterY);
                 this.ctx.quadraticCurveTo(connection.x1, connection.y1, connection.x2, connection.y2);
             }
