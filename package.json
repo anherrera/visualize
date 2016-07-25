@@ -1,0 +1,24 @@
+{
+  "name": "visualize",
+  "version": "1.0.0",
+  "description": "visualize",
+  "main": "index.js",
+  "scripts": {
+    "start": "browser-sync start --server --files ./*",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lipho/visualize.git"
+  },
+  "keywords": [],
+  "author": "alexa herrera",
+  "license": "?",
+  "bugs": {
+    "url": "?"
+  },
+  "homepage": "?",
+  "devDependencies": {
+    "browser-sync": "^2.13.0"
+  }
+}

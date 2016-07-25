@@ -1,8 +1,8 @@
 <!--
 /**
- * This work is licensed under the Creative Commons Attribution-NonCommercial 
- * 4.0 International License. To view a copy of this license, visit 
- * http://creativecommons.org/licenses/by-nc/4.0/ or send a letter to 
+ * This work is licensed under the Creative Commons Attribution-NonCommercial
+ * 4.0 International License. To view a copy of this license, visit
+ * http://creativecommons.org/licenses/by-nc/4.0/ or send a letter to
  * Creative Commons, 444 Castro Street, Suite 900, Mountain View, California, 94041, USA.
  */
 -->
@@ -215,7 +215,7 @@
                 date.setTime(date.getTime()+(days*24*60*60*1000));
                 expires = "; expires="+date.toGMTString();
             }
-            
+
             document.cookie = name+"="+value+expires+"; path=/";
         }
 
@@ -303,7 +303,7 @@
             <div class="clear"></div>
         </div>
     </script>
-    
+
     <script type="text/javascript" src="js/colors.min.js"></script>
     <script type="text/javascript" src="js/presets.js"></script>
     <script type="text/javascript" src="js/visualize.js"></script>
@@ -311,9 +311,16 @@
     <script type="text/javascript" src="js/menu.js"></script>
 
     <script type="text/javascript">
+        var DEV = true;
         var V = new VISUALIZE(PRESETS);
-        var M = new MENU(PRESETS);
-        V.draw();
+//        var M = new MENU(PRESETS);
+
+//        var vis = window.setTimeout(V._draw.bind(V), 1000);
+        var vis = window.setInterval(V._draw.bind(V), 100);
+        window.setTimeout(function () {
+            window.clearInterval(vis)
+        }, 10000);
+
     </script>
 
 </body>
